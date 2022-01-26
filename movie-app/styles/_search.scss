@@ -1,0 +1,85 @@
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 300px);
+  gap: 50px;
+  justify-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 300px;
+  background-color: transparent;
+  box-shadow: 0 0px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  display: grid;
+  grid-template-rows: 450px 150px 1fr;
+  &__content {
+    color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    transition: color 0.3s ease-in-out;
+  }
+  &__title {
+    font-size: 25px;
+    font-family: Merriweather;
+  }
+  &:hover &__content {
+    color: transparent;
+  }
+  &:hover .score {
+    background: transparent;
+  }
+  &:hover .review {
+    transform: translateY(0);
+  }
+}
+.card img {
+  display: block;
+  max-width: 100%;
+}
+
+.score {
+  background-color: rgba(95, 192, 255, 0.8);
+  padding: 5px 5px;
+  border-radius: 3px;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+  &.red {
+    color: red;
+  }
+  &.orange {
+    color: orange;
+  }
+  &.yellow {
+    color: yellow;
+  }
+}
+
+.review {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+ 
+  padding: 10px;
+  height: 55%;
+
+  background-color: rgba(95, 192, 255, 0.9);
+  color: white;
+  border-radius: 10px;
+
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out;
+  &__title {
+    font-size: 20px;
+    font-family: Merriweather;
+    text-align: center;
+  }
+  &__text {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+}
