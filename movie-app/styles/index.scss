@@ -60,7 +60,7 @@ body {
   display: grid;
   grid-template-rows: 100px 1fr auto;
   grid-template-columns: 100%;
-  gap: 20px;
+  gap: 40px;
 }
 .container {
   max-width: 1440px;
@@ -71,8 +71,20 @@ body {
 .hide {
   display: none;
 }
-.show {
-  display: block;
+
+.modal {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+
+  transition: opacity 0.5s ease-in-out;
 }
 
 /*========================== HEADER ======================================================================*/

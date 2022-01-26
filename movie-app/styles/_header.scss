@@ -6,15 +6,44 @@
     rgba(15, 67, 135, 1) 40%,
     rgba(95, 192, 255, 1) 80%
   );
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 
   &__form {
     display: grid;
     justify-content: end;
     align-items: center;
-    padding: 25px 20px;
+    padding: 25px 25px;
+    position: relative;
+  }
+  .search-list {
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 50px;
+
+    width: 305px;
+    height: auto;
+    padding: 10px 10px;
+
+    background: rgba(95, 192, 255, 1);
+    border: 2px solid white;
+    border-radius: 10px;
+    & .card__title {
+      margin-bottom: 10px;
+      padding: 5px;
+
+      font-size: 20px;
+
+      border-radius: 5px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+    }
+    &.show {
+      display: block;
+    }
   }
   .form {
     position: relative;
+    z-index: 10;
     .search {
       width: 310px;
       background-color: transparent;
@@ -30,7 +59,7 @@
       }
     }
     .search::placeholder {
-      color: $white;
+      color: rgba(95, 192, 255, 1);
     }
     .clear {
       position: absolute;
@@ -49,7 +78,7 @@
         background: rgba(15, 67, 135, 1);
         border-radius: 50%;
       }
-      &:active  {
+      &:active {
         background: rgb(0, 0, 0);
         border-radius: 50%;
       }
