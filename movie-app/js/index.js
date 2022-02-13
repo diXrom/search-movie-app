@@ -24,24 +24,6 @@ const createCards = function () {
         resetBtn = document.querySelector('.clear'),
         searchList = document.querySelector('.search-list'),
         modal = document.querySelector('.modal');
-    const getData = async url => {
-        let response = await fetch(url);
-        if (!response.ok) { throw new Error(`Ошибка статус ${response.status}`); }
-        return await response.json();
-    };
-    const searchFilms = (str) => {
-        getData(`https://api.themoviedb.org/3/search/movie?api_key=124e821e9b8de02f2bd7bc0d63125e9e&query=${str}`)
-            .then(array => {
-                cardInner.innerHTML = '';
-                if (array.results.length === 0) alert('По вашему запросу ничего не найденно')
-                array.results.forEach(({ poster_path, original_title, vote_average, overview, parentSelector = '.cards' }) => {
-                    new cardItem(`https://image.tmdb.org/t/p/w1280/${poster_path}`, original_title, vote_average, overview, parentSelector, 'card'
-                    ).render();
-                });
-                hideModal();
-            }
-            );
-    };
     class cardItem {
         constructor(src, title, score, review, parentSelector, selector) {
             this.src = src;
@@ -52,7 +34,8 @@ const createCards = function () {
             this.getShortReview(review);
             this.getColorScore(score);
         }
-        getShortReview(str) {
+        getShortReview(str = 'no Review') {
+            if (str.length == 0) return this.review = 'This movie has no description yet';
             this.review = str.slice(0, str.includes('.') ? str.indexOf('.') > 160 ? 150 : str.indexOf('.') + 1 : 150).replace(/(s$)|(.$)/, '...');
         }
         getColorScore(num) {
@@ -73,22 +56,28 @@ const createCards = function () {
             this.parent.append(div);
         }
     }
+    const getData = async url => {
+        let response = await fetch(url);
+        if (!response.ok) { throw new Error(`Ошибка статус ${response.status}`); }
+        return await response.json();
+    };
+    const searchFilms = (str) => {
+        getData(`https://api.themoviedb.org/3/search/movie?api_key=124e821e9b8de02f2bd7bc0d63125e9e&query=${str}`)
+            .then(array => {
+                cardInner.innerHTML = '';
+                if (array.results.length === 0) alert('По вашему запросу ничего не найденно')
+                array.results.forEach(({ poster_path, original_title, vote_average, overview, parentSelector = '.cards' }) => {
+                    new cardItem(`https://image.tmdb.org/t/p/w1280/${poster_path}`, original_title, vote_average, overview, parentSelector, 'card'
+                    ).render();
+                });
+                hideModal();
+            });
+    };
     getData('https://api.themoviedb.org/3/discover/movie?&api_key=124e821e9b8de02f2bd7bc0d63125e9e&with_cast=2963&without_genres=16')
         .then(array => array.results.forEach(({ poster_path, original_title, vote_average, overview, parentSelector = '.cards' }) => {
             new cardItem(`https://image.tmdb.org/t/p/w1280/${poster_path}`, original_title, vote_average, overview, parentSelector, 'card')
                 .render();
         }));
-    resetBtn.addEventListener('click', (e) => {
-        form.reset();
-        searchList.classList.remove('show');
-    });
-    document.addEventListener('keydown', (e) => {
-        if (e.code !== 'Enter') return;
-        e.preventDefault();
-        searchList.classList.remove('show');
-        searchFilms(search.value)
-    });
-
     const showModal = () => {
         modal.style.opacity = 1;
         modal.style.zIndex = 9;
@@ -96,9 +85,28 @@ const createCards = function () {
     const hideModal = () => {
         modal.style.opacity = 0;
         modal.style.zIndex = -9;
+        searchList.classList.remove('show');
     }
+    showModal();
+    resetBtn.addEventListener('click', (e) => {
+        form.reset();
+        searchList.classList.remove('show');
+        hideModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.code !== 'Enter') return;
+        e.preventDefault();
+        searchList.classList.remove('show');
+        searchFilms(search.value)
+        search.blur();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.code !== 'Escape') return;
+        e.preventDefault();
+        hideModal();
+    });
     search.addEventListener('click', showModal);
-    search.addEventListener('focusout', hideModal);
+    modal.addEventListener('click', hideModal);
     document.addEventListener('scroll', hideModal);
     search.addEventListener('input', (e) => {
         if (!search.value) {
@@ -113,7 +121,13 @@ const createCards = function () {
                     return;
                 }
                 searchList.classList.add('show');
-                array.results.splice(0, 5).forEach(({ poster_path, original_title, vote_average, overview, parentSelector = '.cards' }) => {
+                array.results.splice(0, 5).forEach((
+                    { poster_path,
+                        original_title,
+                        vote_average,
+                        overview,
+                        parentSelector = '.cards'
+                    }) => {
                     const filmTitle = document.createElement('h2');
                     filmTitle.classList.add('card__title');
                     filmTitle.innerHTML = original_title;
@@ -122,9 +136,13 @@ const createCards = function () {
                         searchList.classList.remove('show');
                         cardInner.innerHTML = '';
                         new cardItem(`https://image.tmdb.org/t/p/w1280/${poster_path}`, original_title, vote_average, overview, parentSelector, 'card').render();
+                        hideModal();
                     });
                     searchList.append(filmTitle);
+
                 });
+            }).finally(() => {
+                document.querySelectorAll('.card__title').forEach((item, i) => setTimeout(() => { item.classList.add('rise'); }, i * 100))
             });
     })
 };

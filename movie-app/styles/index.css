@@ -327,7 +327,7 @@ body {
   position: absolute;
   display: none;
   left: 5px;
-  top: 50px;
+  top: 48px;
   width: 305px;
   height: auto;
   padding: 10px 10px;
@@ -336,17 +336,28 @@ body {
   border-radius: 10px;
 }
 
-.header .search-list .card__title {
+.header .search-list.show {
+  display: block;
+}
+
+.header .search-list.show .card__title {
   margin-bottom: 10px;
   padding: 5px;
   font-size: 20px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
-          box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 7px 7px 5px 3px rgba(0, 0, 0, 0.25);
+          box-shadow: 7px 7px 5px 3px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  -webkit-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
 }
 
-.header .search-list.show {
-  display: block;
+.header .search-list.show .card__title:hover {
+  cursor: pointer;
+}
+
+.header .search-list.show .card__title.rise {
+  opacity: 1;
 }
 
 .header .form {
@@ -527,6 +538,7 @@ body {
   bottom: 0;
   padding: 10px;
   height: 25%;
+  width: 100%;
   background-color: rgba(95, 192, 255, 0.9);
   color: white;
   border-radius: 10px;
@@ -622,3 +634,4 @@ body {
 .footer__inner-rss a:hover {
   color: #000000;
 }
+/*# sourceMappingURL=index.css.map */
