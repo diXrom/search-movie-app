@@ -1,2 +1,2 @@
-# dixrom-JSFEPRESCHOOL
-Private repository for @dixrom
+- A small AJAX project for movie search 
+- Link: https://dixrom.github.io/search-movie-app/movie-app
